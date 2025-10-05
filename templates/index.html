@@ -6,12 +6,18 @@
 </head>
 <body>
     <h1>Kino Filmid</h1>
+
+    <!-- 🔘 Kinokava nupp -->
+    <a href="{{ url_for('schedule') }}">
+        <button>Vaata Kinokava</button>
+    </a>
+
     <ul>
         {% for movie in movies %}
         <li>
-            <img src="{{ movie[3] }}" alt="{{ movie[1] }}" width="150">
-            <h2><a href="{{ url_for('movie_detail', movie_id=movie[0]) }}">{{ movie[1] }}</a></h2>
-            <p>{{ movie[2] }}</p>
+            <img src="{{ movie.image }}" alt="{{ movie.title }}" width="150">
+            <h2><a href="{{ url_for('movie_detail', movie_id=movie.id) }}">{{ movie.title }}</a></h2>
+            <p>{{ movie.description }}</p>
         </li>
         {% endfor %}
     </ul>
