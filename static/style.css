@@ -23,3 +23,15 @@ button {
 button:hover {
     background-color: #0056b3;
 }
+.top-movies {
+    display: flex;
+    gap: 20px;
+}
+
+.movie-card {
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 10px;
+    width: 250px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}

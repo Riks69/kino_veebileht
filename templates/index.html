@@ -12,11 +12,25 @@
         <button>Vaata Kinokava</button>
     </a>
 
+    <!-- 🎬 TOP FILMID -->
+    <h2>Top filmid</h2>
+    <div class="top-movies">
+        {% for movie in movies[:3] %}
+        <div class="movie-card">
+            <img src="{{ movie.image }}" alt="{{ movie.title }}" width="200">
+            <h3><a href="{{ url_for('movie_detail', movie_id=movie.id) }}">{{ movie.title }}</a></h3>
+            <p>{{ movie.description }}</p>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- 🎞 Kõik ülejäänud filmid -->
+    <h2>Kõik filmid</h2>
     <ul>
-        {% for movie in movies %}
+        {% for movie in movies[3:] %}
         <li>
             <img src="{{ movie.image }}" alt="{{ movie.title }}" width="150">
-            <h2><a href="{{ url_for('movie_detail', movie_id=movie.id) }}">{{ movie.title }}</a></h2>
+            <h3><a href="{{ url_for('movie_detail', movie_id=movie.id) }}">{{ movie.title }}</a></h3>
             <p>{{ movie.description }}</p>
         </li>
         {% endfor %}
