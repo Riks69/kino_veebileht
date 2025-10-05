@@ -1,0 +1,12 @@
+# Virtuaalkeskkond
+venv/
+
+# Python cache failid
+__pycache__/
+*.pyc
+
+# VSCode seaded (valikuline)
+.vscode/
+
+# Andmebaas (kui soovite ise lokaalselt luua)
+*.db
