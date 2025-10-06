@@ -1,4 +1,35 @@
 /* =========================
+   Põhivärvid - hele/tume
+========================= */
+:root {
+    --bg-color: #fafafa;
+    --text-color: #333;
+    --card-bg: #fff;
+    --header-bg: #fff;
+    --button-bg: #007B50;
+    --button-text: #fff;
+    --genres-bg: #e0f0eb;
+    --genres-text: #007B50;
+    --seat-free: #28a745;
+    --seat-selected: #00c878;
+    --seat-taken: #aa4444;
+}
+
+body.dark-mode {
+    --bg-color: #1e1e1e;
+    --text-color: #f0f0f0;
+    --card-bg: #2b2b2b;
+    --header-bg: #2b2b2b;
+    --button-bg: #ffc966;
+    --button-text: #1e1e1e;
+    --genres-bg: #444;
+    --genres-text: #f0f0f0;
+    --seat-free: #555;
+    --seat-selected: #ffc966;
+    --seat-taken: #aa4444;
+}
+
+/* =========================
    Reset ja baas
 ========================= */
 * {
@@ -9,8 +40,8 @@
 
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #1e1e1e; /* tumedam taust */
-    color: #f0f0f0; /* hele tekst */
+    background-color: var(--bg-color);
+    color: var(--text-color);
     line-height: 1.6;
     margin: 0;
 }
@@ -25,14 +56,15 @@ body {
    Header
 ========================= */
 header {
-    background-color: #2b2b2b;
-    color: #f0f0f0;
+    background-color: var(--header-bg);
+    color: var(--text-color);
     padding: 20px 0;
     margin-bottom: 40px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.5);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
     position: sticky;
     top: 0;
     z-index: 100;
+    transition: background-color 0.3s ease;
 }
 
 .header-container {
@@ -48,19 +80,19 @@ header h1 {
 }
 
 .header-link {
-    color: #f0f0f0;
+    color: var(--text-color);
     text-decoration: none;
     transition: color 0.3s ease;
 }
 
 .header-link:hover {
-    color: #ffd966;
+    color: #00c878;
     text-decoration: underline;
 }
 
 .nav-button {
-    background-color: #444444;
-    color: #f0f0f0;
+    background-color: var(--button-bg);
+    color: var(--button-text);
     padding: 10px 22px;
     border-radius: 8px;
     font-weight: 600;
@@ -69,8 +101,8 @@ header h1 {
 }
 
 .nav-button:hover {
-    background-color: #555555;
     transform: translateY(-2px);
+    opacity: 0.9;
 }
 
 /* =========================
@@ -91,16 +123,16 @@ header h1 {
 }
 
 .top-movies::-webkit-scrollbar-thumb {
-    background-color: rgba(255,255,255,0.2);
+    background-color: rgba(0,0,0,0.2);
     border-radius: 4px;
 }
 
 .movie-card {
-    background-color: #2b2b2b;
+    background-color: var(--card-bg);
     border-radius: 16px;
     padding: 15px;
     width: 250px;
-    box-shadow: 0 6px 15px rgba(0,0,0,0.5);
+    box-shadow: 0 6px 15px rgba(0,0,0,0.1);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -120,8 +152,8 @@ header h1 {
 
 .movie-card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 12px 25px rgba(0,0,0,0.7);
-    background-color: #3a3a3a;
+    box-shadow: 0 12px 25px rgba(0,0,0,0.2);
+    background-color: var(--card-bg);
 }
 
 .movie-card img {
@@ -138,16 +170,16 @@ header h1 {
 
 .movie-card h3 a {
     text-decoration: none;
-    color: #f0f0f0;
+    color: var(--text-color);
     transition: color 0.3s ease;
 }
 
 .movie-card h3 a:hover {
-    color: #ffd966;
+    color: #00c878;
 }
 
 .movie-card p {
-    color: #ccc;
+    color: var(--text-color);
     font-size: 14px;
     line-height: 1.4;
 }
@@ -162,39 +194,43 @@ header h1 {
 
 .genres a {
     display: inline-block;
-    background-color: #444444;
+    background-color: var(--genres-bg);
     padding: 3px 8px;
     margin: 2px;
     border-radius: 12px;
-    color: #f0f0f0;
+    color: var(--genres-text);
     font-weight: 600;
     text-decoration: none;
     transition: all 0.3s ease;
 }
 
 .genres a:hover {
-    background-color: #555555;
+    opacity: 0.8;
 }
 
 /* =========================
    Filmide list
 ========================= */
+.movie-list {
+    list-style: none;
+    padding-left: 0;
+}
+
 .movie-list li {
     display: flex;
     align-items: flex-start;
-    background-color: #2b2b2b;
+    background-color: var(--card-bg);
     margin-bottom: 18px;
     padding: 15px;
     border-radius: 16px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
     gap: 15px;
     transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
 }
 
 .movie-list li:hover {
     transform: translateY(-3px);
-    box-shadow: 0 10px 20px rgba(0,0,0,0.7);
-    background-color: #3a3a3a;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
 }
 
 .movie-list img {
@@ -206,11 +242,11 @@ header h1 {
 
 .movie-info h3 a {
     text-decoration: none;
-    color: #f0f0f0;
+    color: var(--text-color);
 }
 
 .movie-info h3 a:hover {
-    color: #ffd966;
+    color: #00c878;
 }
 
 /* =========================
@@ -232,14 +268,14 @@ header h1 {
 .back-link {
     display: inline-block;
     margin-top: 20px;
-    color: #f0f0f0;
+    color: var(--button-bg);
     font-weight: 600;
     text-decoration: none;
     transition: all 0.3s ease;
 }
 
 .back-link:hover {
-    color: #ffd966;
+    color: #00c878;
     transform: translateY(-1px);
 }
 
@@ -250,27 +286,27 @@ header h1 {
     width: 100%;
     border-collapse: collapse;
     margin-bottom: 25px;
-    background-color: #2b2b2b;
+    background-color: var(--card-bg);
     border-radius: 16px;
     overflow: hidden;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.6);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
 }
 
 .schedule-container th, 
 .schedule-container td {
     padding: 14px 15px;
     text-align: left;
-    border-bottom: 1px solid #444444;
+    border-bottom: 1px solid #ccc;
     vertical-align: middle;
 }
 
 .schedule-container thead {
-    background-color: #3a3a3a;
-    color: #f0f0f0;
+    background-color: var(--header-bg);
+    color: var(--text-color);
 }
 
 .schedule-container tbody tr:hover {
-    background-color: #4a4a4a;
+    background-color: var(--genres-bg);
 }
 
 .film-cell {
@@ -287,8 +323,8 @@ header h1 {
 
 /* Ostunupp */
 .buy-button {
-    background-color: #ffc966; /* helekollane */
-    color: #1e1e1e;
+    background-color: var(--button-bg);
+    color: var(--button-text);
     padding: 10px 18px;
     border-radius: 8px;
     font-weight: 600;
@@ -298,17 +334,17 @@ header h1 {
 }
 
 .buy-button:hover {
-    background-color: #ffd966;
     transform: translateY(-1px);
+    opacity: 0.9;
 }
 
 /* =========================
    Flash messages
 ========================= */
 .flash-messages {
-    background-color: #333333;
-    border: 1px solid #555555;
-    color: #f0f0f0;
+    background-color: var(--card-bg);
+    border: 1px solid #ccc;
+    color: var(--text-color);
     padding: 15px;
     margin: 15px auto;
     max-width: 1100px;
@@ -339,17 +375,17 @@ header h1 {
     color: #ffffff;
     cursor: pointer;
     transition: all 0.3s ease;
-    background-color: #555555; /* vaba iste */
+    background-color: var(--seat-free);
 }
 
 .seat.taken {
-    background-color: #aa4444;
+    background-color: var(--seat-taken);
     cursor: not-allowed;
     opacity: 0.8;
 }
 
 .seat.selected {
-    background-color: #ffc966; /* valitud iste */
+    background-color: var(--seat-selected);
     animation: pulse 0.4s ease;
 }
 
@@ -365,61 +401,24 @@ header h1 {
 footer {
     margin-top: 60px;
     padding: 20px 0;
-    background-color: #2b2b2b;
-    color: #aaaaaa;
+    background-color: var(--header-bg);
+    color: var(--text-color);
     font-size: 14px;
     text-align: center;
-    box-shadow: 0 -4px 8px rgba(0,0,0,0.5);
+    box-shadow: 0 -4px 8px rgba(0,0,0,0.1);
 }
 
 /* =========================
    Responsive
 ========================= */
 @media (max-width: 768px) {
-    .top-movies {
-        flex-direction: row;
-        overflow-x: auto;
-        padding-bottom: 10px;
-    }
-
-    .movie-card {
-        width: 220px;
-    }
-
-    .movie-list li {
-        flex-direction: column;
-        align-items: center;
-        text-align: center;
-    }
-
-    .movie-list img {
-        width: 100%;
-        max-width: 280px;
-        margin-bottom: 12px;
-    }
-
-    .movie-info {
-        width: 100%;
-    }
-
-    .header-container {
-        flex-direction: column;
-        gap: 12px;
-    }
-
-    .buy-button {
-        width: 100%;
-        padding: 12px 0;
-        font-size: 16px;
-    }
-
-    .seats-container {
-        max-width: 90%;
-    }
-
-    .seat {
-        width: 35px;
-        height: 35px;
-        font-size: 14px;
-    }
+    .top-movies { flex-direction: row; overflow-x: auto; padding-bottom: 10px; }
+    .movie-card { width: 220px; }
+    .movie-list li { flex-direction: column; align-items: center; text-align: center; }
+    .movie-list img { width: 100%; max-width: 280px; margin-bottom: 12px; }
+    .movie-info { width: 100%; }
+    .header-container { flex-direction: column; gap: 12px; }
+    .buy-button { width: 100%; padding: 12px 0; font-size: 16px; }
+    .seats-container { max-width: 90%; }
+    .seat { width: 35px; height: 35px; font-size: 14px; }
 }

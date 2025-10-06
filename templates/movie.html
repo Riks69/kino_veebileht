@@ -13,13 +13,14 @@
     <h1><a href="{{ url_for('index') }}" class="header-link">Kino Filmid</a></h1>
     <nav>
       <a href="{{ url_for('schedule') }}" class="nav-button">Kinokava</a>
+      <button id="toggle-theme" class="nav-button">🌙 Vaheta režiimi</button>
     </nav>
   </div>
 </header>
 
 <main class="container movie-detail">
     <h2>{{ movie.title }}</h2>
-    <img src="{{ movie.image }}" alt="{{ movie.title }}" />
+    <img src="{{ movie.image }}" alt="{{ movie.title }}" class="movie-img" />
     <p>{{ movie.description }}</p>
     <a href="{{ url_for('index') }}" class="back-link">← Tagasi filmide lehele</a>
 </main>
@@ -29,6 +30,29 @@
     <p>&copy; 2025 Kino Leht. Kõik õigused kaitstud.</p>
   </div>
 </footer>
+
+<!-- Tume/hele režiimi script koos LocalStorage salvestamisega -->
+<script>
+const btn = document.getElementById('toggle-theme');
+
+// Laeme eelneva teema LocalStorage'ist
+if (localStorage.getItem('theme') === 'dark') {
+    document.body.classList.add('dark-mode');
+    btn.textContent = '☀️ Vaheta režiimi';
+}
+
+btn.addEventListener('click', () => {
+    document.body.classList.toggle('dark-mode');
+
+    if(document.body.classList.contains('dark-mode')) {
+        btn.textContent = '☀️ Vaheta režiimi';
+        localStorage.setItem('theme', 'dark');
+    } else {
+        btn.textContent = '🌙 Vaheta režiimi';
+        localStorage.setItem('theme', 'light');
+    }
+});
+</script>
 
 </body>
 </html>

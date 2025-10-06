@@ -13,6 +13,7 @@
     <h1>Kino Filmid</h1>
     <nav>
       <a href="{{ url_for('schedule') }}" class="nav-button">Kinokava</a>
+      <button id="toggle-theme" class="nav-button">🌙 Vaheta režiimi</button>
     </nav>
   </div>
 </header>
@@ -72,6 +73,30 @@
     <p>&copy; 2025 Kino Leht. Kõik õigused kaitstud.</p>
   </div>
 </footer>
+
+<!-- Tume/hele režiimi script koos LocalStorage salvestamisega -->
+<script>
+const btn = document.getElementById('toggle-theme');
+
+// Laeme eelmise valiku LocalStorage’ist
+if (localStorage.getItem('theme') === 'dark') {
+    document.body.classList.add('dark-mode');
+    btn.textContent = '☀️ Vaheta režiimi';
+}
+
+// Nupu click
+btn.addEventListener('click', () => {
+    document.body.classList.toggle('dark-mode');
+
+    if(document.body.classList.contains('dark-mode')) {
+        btn.textContent = '☀️ Vaheta režiimi';
+        localStorage.setItem('theme', 'dark');
+    } else {
+        btn.textContent = '🌙 Vaheta režiimi';
+        localStorage.setItem('theme', 'light');
+    }
+});
+</script>
 
 </body>
 </html>
