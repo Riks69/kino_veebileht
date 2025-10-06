@@ -54,14 +54,27 @@ def create_and_populate_db():
     movies = [
         ("Oppenheimer", "Elulooline draama tuumapommi isast.", "https://via.placeholder.com/150"),
         ("Barbie", "Fantaasiarikas komöödia plastimaailmas.", "https://via.placeholder.com/150"),
-        ("Tenet", "Ajaga manipuleeriv ulmefilm.", "https://via.placeholder.com/150")
+        ("Tenet", "Ajaga manipuleeriv ulmefilm.", "https://via.placeholder.com/150"),
+        ("The Holdovers", "Tundlik draama õpetajast ja õpilasest, kes veedavad koos jõulud internaatkoolis. Täis nostalgiat ja soojust.", "https://via.placeholder.com/150"),
+        ("Free Guy", "Videomängu kõrvaltegelasest saab ootamatult kangelane. Kiire tempo, palju nalja ja südamlik sõnum.", "https://via.placeholder.com/150"),
+
     ]
     c.executemany("INSERT INTO movies (title, description, image) VALUES (?, ?, ?)", movies)
 
     # Lisa kinod
     cinemas = [
         ("Apollo Solarise", "Tallinn, Solaris Kaubanduskeskus"),
-        ("Coca-Cola Plaza", "Tallinn, Viru väljak 4")
+        ("Coca-Cola Plaza", "Tallinn, Viru väljak 4"),
+        ("Apollo Mustamäe", "Tallinn, Mustamäe Keskus"),
+        ("Apollo Kristiine", "Tallinn, Kristiine Keskus"),
+        ("Apollo Saaremaa", "Saaremaa, Auriga Keskus"),
+        ("Apollo Viljandi", "Viljandi, Centrum Keskus"),
+        ("Apollo Pärnu", "Pärnu, Pärnu Keskus"),
+        ("Apollo Eeden", "Tartu, Eeden Kaubanduskeskus"),
+        ("Apollo Lõunakeskus", "Tartu, Lõunakeskus"),
+        ("Apollo Tasku", "Tartu, Tasku Keskus"),
+        ("Apollo Jõhvi", "Jõhvi, Pargi Keskus"),
+        ("Apollo Astri", "Narva, Astri Keskus"),
     ]
     c.executemany("INSERT INTO cinemas (name, location) VALUES (?, ?)", cinemas)
 
