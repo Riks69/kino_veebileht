@@ -44,10 +44,30 @@ def create_and_populate_db():
     )
     """)
 
+    # Add genres and movie_genres tables
+    c.execute("""
+    CREATE TABLE IF NOT EXISTS genres (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        name TEXT NOT NULL UNIQUE
+    )
+    """)
+
+    c.execute("""
+    CREATE TABLE IF NOT EXISTS movie_genres (
+        movie_id INTEGER NOT NULL,
+        genre_id INTEGER NOT NULL,
+        FOREIGN KEY (movie_id) REFERENCES movies(id),
+        FOREIGN KEY (genre_id) REFERENCES genres(id),
+        PRIMARY KEY (movie_id, genre_id)
+    )
+    """)
+
     # Kustuta vana sisu, et vältida dubleerimist
     c.execute("DELETE FROM screenings")
     c.execute("DELETE FROM halls")
     c.execute("DELETE FROM cinemas")
+    c.execute("DELETE FROM movie_genres")
+    c.execute("DELETE FROM genres")
     c.execute("DELETE FROM movies")
 
     # Lisa filmid
@@ -100,6 +120,41 @@ def create_and_populate_db():
         (3, 1, (now + timedelta(hours=4)).strftime("%Y-%m-%d %H:%M"), 7.50)
     ]
     c.executemany("INSERT INTO screenings (movie_id, hall_id, start_time, price) VALUES (?, ?, ?, ?)", screenings)
+
+    # Lisa žanrid
+    genres = [
+        ("Action",),
+        ("Drama",),
+        ("Sci-Fi",),
+        ("Comedy",),
+        ("Animation",),
+        ("Thriller",),
+        ("Horror",),
+        ("Biography",),
+        ("Adventure",),
+        ("Fantasy",)
+    ]
+    c.executemany("INSERT INTO genres (name) VALUES (?)", genres)
+
+    # Seosed filmide ja žanride vahel
+    movie_genres = [
+        (1, 8),  # Oppenheimer - Biography
+        (2, 4),  # Barbie - Comedy
+        (3, 3),  # Tenet - Sci-Fi
+        (4, 2),  # The Holdovers - Drama
+        (5, 4),  # Free Guy - Comedy
+        (6, 1),  # John Wick 4 - Action
+        (7, 1),  # Mission Impossible - Action
+        (8, 7),  # The Nun II - Horror
+        (9, 7),  # Talk to Me - Horror
+        (10, 9), # Dune: Part Two - Adventure
+        (10, 3), # Dune: Part Two - Sci-Fi
+        (11, 2), # Everything Everywhere All At Once - Drama
+        (11, 3), # Everything Everywhere All At Once - Sci-Fi
+        (12, 5), # Elemental - Animation
+        (13, 5), # Minions - Animation
+    ]
+    c.executemany("INSERT INTO movie_genres (movie_id, genre_id) VALUES (?, ?)", movie_genres)
 
     conn.commit()
     conn.close()

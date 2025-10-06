@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Filmid žanris {{ genre }}</title>
+</head>
+<body>
+    <h1>Filmid žanris: {{ genre }}</h1>
+    <a href="{{ url_for('index') }}">Tagasi kõikide filmide juurde</a>
+
+    <ul>
+        {% for movie in movies %}
+        <li>
+            <img src="{{ movie['image'] }}" alt="{{ movie['title'] }}" width="150">
+            <h3><a href="{{ url_for('movie_detail', movie_id=movie['id']) }}">{{ movie['title'] }}</a></h3>
+            <p>{{ movie['description'] }}</p>
+        </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

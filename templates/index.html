@@ -19,6 +19,14 @@
         <div class="movie-card">
             <img src="{{ movie.image }}" alt="{{ movie.title }}" width="200">
             <h3><a href="{{ url_for('movie_detail', movie_id=movie.id) }}">{{ movie.title }}</a></h3>
+            <p>
+                {% if movie.genres %}
+                    Žanrid:
+                    {% for genre in movie.genres.split(',') %}
+                        <a href="{{ url_for('movies_by_genre', genre_name=genre.strip()) }}">{{ genre.strip() }}</a>{% if not loop.last %}, {% endif %}
+                    {% endfor %}
+                {% endif %}
+            </p>
             <p>{{ movie.description }}</p>
         </div>
         {% endfor %}
@@ -31,6 +39,14 @@
         <li>
             <img src="{{ movie.image }}" alt="{{ movie.title }}" width="150">
             <h3><a href="{{ url_for('movie_detail', movie_id=movie.id) }}">{{ movie.title }}</a></h3>
+            <p>
+                {% if movie.genres %}
+                    Žanrid:
+                    {% for genre in movie.genres.split(',') %}
+                        <a href="{{ url_for('movies_by_genre', genre_name=genre.strip()) }}">{{ genre.strip() }}</a>{% if not loop.last %}, {% endif %}
+                    {% endfor %}
+                {% endif %}
+            </p>
             <p>{{ movie.description }}</p>
         </li>
         {% endfor %}
