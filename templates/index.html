@@ -1,55 +1,77 @@
 <!DOCTYPE html>
-<html>
+<html lang="et">
 <head>
-    <title>Kino Leht</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Kino Filmid</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
 </head>
 <body>
+
+<header>
+  <div class="container header-container">
     <h1>Kino Filmid</h1>
+    <nav>
+      <a href="{{ url_for('schedule') }}" class="nav-button">Kinokava</a>
+    </nav>
+  </div>
+</header>
 
-    <!-- 🔘 Kinokava nupp -->
-    <a href="{{ url_for('schedule') }}">
-        <button>Vaata Kinokava</button>
-    </a>
+<main class="container">
 
-    <!-- 🎬 TOP FILMID -->
+  <!-- 🎬 TOP FILMID -->
+  <section>
     <h2>Top filmid</h2>
     <div class="top-movies">
-        {% for movie in movies[:3] %}
-        <div class="movie-card">
-            <img src="{{ movie.image }}" alt="{{ movie.title }}" width="200">
-            <h3><a href="{{ url_for('movie_detail', movie_id=movie.id) }}">{{ movie.title }}</a></h3>
-            <p>
-                {% if movie.genres %}
-                    Žanrid:
-                    {% for genre in movie.genres.split(',') %}
-                        <a href="{{ url_for('movies_by_genre', genre_name=genre.strip()) }}">{{ genre.strip() }}</a>{% if not loop.last %}, {% endif %}
-                    {% endfor %}
-                {% endif %}
-            </p>
-            <p>{{ movie.description }}</p>
-        </div>
-        {% endfor %}
+      {% for movie in movies[:3] %}
+      <div class="movie-card">
+          <img src="{{ movie.image }}" alt="{{ movie.title }}" />
+          <h3><a href="{{ url_for('movie_detail', movie_id=movie.id) }}">{{ movie.title }}</a></h3>
+          <p class="genres">
+            {% if movie.genres %}
+              Žanrid:
+              {% for genre in movie.genres.split(',') %}
+                <a href="{{ url_for('movies_by_genre', genre_name=genre.strip()) }}">{{ genre.strip() }}</a>{% if not loop.last %}, {% endif %}
+              {% endfor %}
+            {% endif %}
+          </p>
+          <p>{{ movie.description }}</p>
+      </div>
+      {% endfor %}
     </div>
+  </section>
 
-    <!-- 🎞 Kõik ülejäänud filmid -->
+  <!-- 🎞 Kõik ülejäänud filmid -->
+  <section>
     <h2>Kõik filmid</h2>
-    <ul>
-        {% for movie in movies[3:] %}
-        <li>
-            <img src="{{ movie.image }}" alt="{{ movie.title }}" width="150">
-            <h3><a href="{{ url_for('movie_detail', movie_id=movie.id) }}">{{ movie.title }}</a></h3>
-            <p>
-                {% if movie.genres %}
-                    Žanrid:
-                    {% for genre in movie.genres.split(',') %}
-                        <a href="{{ url_for('movies_by_genre', genre_name=genre.strip()) }}">{{ genre.strip() }}</a>{% if not loop.last %}, {% endif %}
-                    {% endfor %}
-                {% endif %}
-            </p>
-            <p>{{ movie.description }}</p>
-        </li>
-        {% endfor %}
+    <ul class="movie-list">
+      {% for movie in movies[3:] %}
+      <li>
+        <img src="{{ movie.image }}" alt="{{ movie.title }}" />
+        <div class="movie-info">
+          <h3><a href="{{ url_for('movie_detail', movie_id=movie.id) }}">{{ movie.title }}</a></h3>
+          <p class="genres">
+            {% if movie.genres %}
+              Žanrid:
+              {% for genre in movie.genres.split(',') %}
+                <a href="{{ url_for('movies_by_genre', genre_name=genre.strip()) }}">{{ genre.strip() }}</a>{% if not loop.last %}, {% endif %}
+              {% endfor %}
+            {% endif %}
+          </p>
+          <p>{{ movie.description }}</p>
+        </div>
+      </li>
+      {% endfor %}
     </ul>
+  </section>
+
+</main>
+
+<footer>
+  <div class="container footer-container">
+    <p>&copy; 2025 Kino Leht. Kõik õigused kaitstud.</p>
+  </div>
+</footer>
+
 </body>
 </html>

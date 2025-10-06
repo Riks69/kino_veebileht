@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="et">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Osta pilet - {{ screening.title }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+    <style>
+        /* Istmeruudud */
+        .seats-container {
+            display: flex;
+            flex-wrap: wrap;
+            max-width: 400px;
+            margin: 20px auto;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        .seat {
+            width: 40px;
+            height: 40px;
+            background-color: #28a745; /* roheline = vaba */
+            border-radius: 6px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: white;
+            user-select: none;
+            transition: background-color 0.3s ease;
+        }
+
+        .seat.taken {
+            background-color: #dc3545; /* punane = võetud */
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+
+        .seat.selected {
+            background-color: #007BFF; /* sinine valitud */
+        }
+
+        /* Responsive */
+        @media (max-width: 480px) {
+            .seat {
+                width: 30px;
+                height: 30px;
+                font-size: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+  <div class="container header-container">
+    <h1><a href="{{ url_for('index') }}" class="header-link">Kino Filmid</a></h1>
+    <nav>
+      <a href="{{ url_for('schedule') }}" class="nav-button">Kinokava</a>
+    </nav>
+  </div>
+</header>
+
+<main class="container movie-detail">
+    <h2>Osta pilet: {{ screening.title }}</h2>
+    <p><strong>Kino:</strong> {{ screening.cinema_name }}</p>
+    <p><strong>Asukoht:</strong> {{ screening.location }}</p>
+    <p><strong>Saal:</strong> {{ screening.hall_name }}</p>
+    <p><strong>Aeg:</strong> {{ screening.start_time }}</p>
+    <p><strong>Hind:</strong> {{ "%.2f"|format(screening.price) }} €</p>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <ul class="flash-messages">
+          {% for category, message in messages %}
+            <li class="{{ category }}">{{ message }}</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
+
+    <form method="POST" action="{{ url_for('buy_ticket', screening_id=screening.id) }}">
+        <div class="seats-container" id="seats-container">
+            {% for seat in seats %}
+                <div
+                  class="seat {% if seat.id in taken_seats %}taken{% endif %}"
+                  data-seat-id="{{ seat.id }}"
+                >
+                    {{ seat.seat_number }}
+                </div>
+            {% endfor %}
+        </div>
+        <!-- Hidden input, kuhu valitud istekoht salvestatakse -->
+        <input type="hidden" name="seat_id" id="seat_id" required />
+        <button type="submit" class="buy-button" disabled id="buy-button">Osta pilet</button>
+    </form>
+
+    <a href="{{ url_for('schedule') }}" class="back-link">← Tagasi kinokavasse</a>
+</main>
+
+<footer>
+  <div class="container footer-container">
+    <p>&copy; 2025 Kino Leht. Kõik õigused kaitstud.</p>
+  </div>
+</footer>
+
+<script>
+    const seats = document.querySelectorAll('.seat');
+    const seatInput = document.getElementById('seat_id');
+    const buyButton = document.getElementById('buy-button');
+
+    seats.forEach(seat => {
+        // Kui istekoht on "taken", siis keela klikk
+        if (seat.classList.contains('taken')) {
+            seat.style.cursor = 'not-allowed';
+            return;
+        }
+
+        seat.addEventListener('click', () => {
+            // Eemalda eelmine valik
+            seats.forEach(s => s.classList.remove('selected'));
+
+            // Lisa valitud klass
+            seat.classList.add('selected');
+
+            // Sea valitud istekoht peidetud inputisse
+            seatInput.value = seat.getAttribute('data-seat-id');
+
+            // Luba ostunupp
+            buyButton.disabled = false;
+        });
+    });
+</script>
+
+</body>
+</html>

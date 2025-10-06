@@ -1,20 +1,44 @@
 <!DOCTYPE html>
-<html>
+<html lang="et">
 <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Filmid žanris {{ genre }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
 </head>
 <body>
-    <h1>Filmid žanris: {{ genre }}</h1>
-    <a href="{{ url_for('index') }}">Tagasi kõikide filmide juurde</a>
 
-    <ul>
+<header>
+  <div class="container header-container">
+    <h1><a href="{{ url_for('index') }}" class="header-link">Kino Filmid</a></h1>
+    <nav>
+      <a href="{{ url_for('schedule') }}" class="nav-button">Kinokava</a>
+    </nav>
+  </div>
+</header>
+
+<main class="container">
+    <h2>Filmid žanris: {{ genre }}</h2>
+    <a href="{{ url_for('index') }}" class="back-link">← Tagasi kõikide filmide juurde</a>
+
+    <ul class="movie-list" style="margin-top: 20px;">
         {% for movie in movies %}
         <li>
-            <img src="{{ movie['image'] }}" alt="{{ movie['title'] }}" width="150">
-            <h3><a href="{{ url_for('movie_detail', movie_id=movie['id']) }}">{{ movie['title'] }}</a></h3>
-            <p>{{ movie['description'] }}</p>
+            <img src="{{ movie['image'] }}" alt="{{ movie['title'] }}" />
+            <div class="movie-info">
+                <h3><a href="{{ url_for('movie_detail', movie_id=movie['id']) }}">{{ movie['title'] }}</a></h3>
+                <p>{{ movie['description'] }}</p>
+            </div>
         </li>
         {% endfor %}
     </ul>
+</main>
+
+<footer>
+  <div class="container footer-container">
+    <p>&copy; 2025 Kino Leht. Kõik õigused kaitstud.</p>
+  </div>
+</footer>
+
 </body>
 </html>

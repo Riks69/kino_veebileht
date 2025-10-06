@@ -1,12 +1,34 @@
 <!DOCTYPE html>
-<html>
+<html lang="et">
 <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{{ movie.title }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
 </head>
 <body>
-    <h1>{{ movie.title }}</h1>
-    <img src="{{ movie.image }}" alt="{{ movie.title }}" width="200">
+
+<header>
+  <div class="container header-container">
+    <h1><a href="{{ url_for('index') }}" class="header-link">Kino Filmid</a></h1>
+    <nav>
+      <a href="{{ url_for('schedule') }}" class="nav-button">Kinokava</a>
+    </nav>
+  </div>
+</header>
+
+<main class="container movie-detail">
+    <h2>{{ movie.title }}</h2>
+    <img src="{{ movie.image }}" alt="{{ movie.title }}" />
     <p>{{ movie.description }}</p>
-    <a href="{{ url_for('index') }}">Tagasi</a>
+    <a href="{{ url_for('index') }}" class="back-link">← Tagasi filmide lehele</a>
+</main>
+
+<footer>
+  <div class="container footer-container">
+    <p>&copy; 2025 Kino Leht. Kõik õigused kaitstud.</p>
+  </div>
+</footer>
+
 </body>
 </html>

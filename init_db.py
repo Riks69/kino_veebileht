@@ -44,7 +44,6 @@ def create_and_populate_db():
     )
     """)
 
-    # Add genres and movie_genres tables
     c.execute("""
     CREATE TABLE IF NOT EXISTS genres (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -62,7 +61,30 @@ def create_and_populate_db():
     )
     """)
 
+    # Uued tabelid istmete ja piletite jaoks
+    c.execute("""
+    CREATE TABLE IF NOT EXISTS seats (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        hall_id INTEGER NOT NULL,
+        seat_number TEXT NOT NULL,
+        FOREIGN KEY (hall_id) REFERENCES halls(id)
+    )
+    """)
+
+    c.execute("""
+    CREATE TABLE IF NOT EXISTS tickets (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        screening_id INTEGER NOT NULL,
+        seat_id INTEGER NOT NULL,
+        purchase_time TEXT NOT NULL,
+        FOREIGN KEY (screening_id) REFERENCES screenings(id),
+        FOREIGN KEY (seat_id) REFERENCES seats(id)
+    )
+    """)
+
     # Kustuta vana sisu, et vältida dubleerimist
+    c.execute("DELETE FROM tickets")
+    c.execute("DELETE FROM seats")
     c.execute("DELETE FROM screenings")
     c.execute("DELETE FROM halls")
     c.execute("DELETE FROM cinemas")
@@ -105,19 +127,38 @@ def create_and_populate_db():
     ]
     c.executemany("INSERT INTO cinemas (name, location) VALUES (?, ?)", cinemas)
 
-    # Lisa saalid
-    halls = [
-        (1, "Saal 1"),
-        (2, "Saal 3")
-    ]
+    # Lisa saalid (iga kino saab 2 saali)
+    halls = []
+    for cinema_id in range(1, len(cinemas) + 1):
+        halls.append((cinema_id, "Saal 1"))
+        halls.append((cinema_id, "Saal 2"))
     c.executemany("INSERT INTO halls (cinema_id, name) VALUES (?, ?)", halls)
 
-    # Lisa seansid (kasutades praegust aega)
+    # Lisa istmed iga saali jaoks (20 kohta iga saali kohta, numbritega A1-A20)
+    c.execute("SELECT id FROM halls")
+    hall_ids = [row[0] for row in c.fetchall()]
+    seats = []
+    for hall_id in hall_ids:
+        for seat_num in range(1, 21):
+            seat_number = f"A{seat_num}"
+            seats.append((hall_id, seat_number))
+    c.executemany("INSERT INTO seats (hall_id, seat_number) VALUES (?, ?)", seats)
+
+    # Lisa seansid (praegusest ajast mõned tunnid edasi, erinevates saalides ja kinodes)
     now = datetime.now()
     screenings = [
         (1, 1, (now + timedelta(hours=2)).strftime("%Y-%m-%d %H:%M"), 9.50),
         (2, 2, (now + timedelta(hours=3)).strftime("%Y-%m-%d %H:%M"), 8.00),
-        (3, 1, (now + timedelta(hours=4)).strftime("%Y-%m-%d %H:%M"), 7.50)
+        (3, 3, (now + timedelta(hours=4)).strftime("%Y-%m-%d %H:%M"), 7.50),
+        (4, 4, (now + timedelta(hours=5)).strftime("%Y-%m-%d %H:%M"), 7.00),
+        (5, 5, (now + timedelta(hours=6)).strftime("%Y-%m-%d %H:%M"), 6.50),
+        (6, 6, (now + timedelta(hours=7)).strftime("%Y-%m-%d %H:%M"), 8.50),
+        (7, 7, (now + timedelta(hours=8)).strftime("%Y-%m-%d %H:%M"), 9.00),
+        (8, 8, (now + timedelta(hours=9)).strftime("%Y-%m-%d %H:%M"), 7.20),
+        (9, 9, (now + timedelta(hours=10)).strftime("%Y-%m-%d %H:%M"), 6.80),
+        (10, 10, (now + timedelta(hours=11)).strftime("%Y-%m-%d %H:%M"), 8.30),
+        (11, 11, (now + timedelta(hours=12)).strftime("%Y-%m-%d %H:%M"), 9.10),
+        (12, 12, (now + timedelta(hours=13)).strftime("%Y-%m-%d %H:%M"), 7.70),
     ]
     c.executemany("INSERT INTO screenings (movie_id, hall_id, start_time, price) VALUES (?, ?, ?, ?)", screenings)
 
@@ -158,7 +199,7 @@ def create_and_populate_db():
 
     conn.commit()
     conn.close()
-    print("Andmebaas loodud ja täidetud näidisandmetega!")
+    print("Andmebaas loodud ja täidetud näidisandmetega koos istmetega!")
 
 if __name__ == "__main__":
     create_and_populate_db()
